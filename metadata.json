@@ -1,0 +1,6 @@
+{
+  "name": "Bank Performance Management System",
+  "description": "A comprehensive performance management system for bank staff with roles for Admin, District Director, Branch Manager, and Branch Staff. Includes PWA and Android support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,219 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "username": { "type": "string" },
+        "role": { "type": "string", "enum": ["Super Admin", "District Director", "Branch Manager", "Branch Staff"] },
+        "districtId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "positionId": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "disabled"] },
+        "mustChangePassword": { "type": "boolean" },
+        "profileCompleted": { "type": "boolean" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "username", "role", "status"]
+    },
+    "District": {
+      "title": "District",
+      "description": "Administrative district",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "managerId": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Branch": {
+      "title": "Branch",
+      "description": "Bank branch",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "districtId": { "type": "string" },
+        "managerId": { "type": "string" }
+      },
+      "required": ["name", "districtId"]
+    },
+    "Position": {
+      "title": "Position",
+      "description": "Job position",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" }
+      },
+      "required": ["title"]
+    },
+    "KPI": {
+      "title": "KPI",
+      "description": "Key Performance Indicator definition",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Target": {
+      "title": "Target",
+      "description": "Performance target",
+      "type": "object",
+      "properties": {
+        "scope": { "type": "string", "enum": ["branch", "staff"] },
+        "ownerId": { "type": "string" },
+        "districtId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "kpiId": { "type": "string" },
+        "period": { "type": "string" },
+        "value": { "type": "number" },
+        "setBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["scope", "ownerId", "kpiId", "period", "value"]
+    },
+    "MappedCustomer": {
+      "title": "Mapped Customer",
+      "description": "Customer mapped for deposit mobilization",
+      "type": "object",
+      "properties": {
+        "staffId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "accountNumber": { "type": "string" },
+        "plannedAmount": { "type": "number" },
+        "plannedDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["pending", "contacted", "deposited"] }
+      },
+      "required": ["staffId", "branchId", "customerName", "accountNumber", "plannedAmount", "plannedDate"]
+    },
+    "Plan": {
+      "title": "Plan",
+      "description": "Daily or weekly activity plan",
+      "type": "object",
+      "properties": {
+        "staffId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "kpiId": { "type": "string" },
+        "type": { "type": "string", "enum": ["daily", "weekly"] },
+        "items": { "type": "array" },
+        "status": { "type": "string", "enum": ["draft", "submitted", "approved", "rejected"] }
+      },
+      "required": ["staffId", "branchId", "kpiId", "type", "status"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "KPI performance report",
+      "type": "object",
+      "properties": {
+        "staffId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "planId": { "type": "string" },
+        "kpiId": { "type": "string" },
+        "period": { "type": "string" },
+        "actualValue": { "type": "number" },
+        "mappedCustomerId": { "type": "string" },
+        "actualAmount": { "type": "number" },
+        "actualDate": { "type": "string", "format": "date" },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "submitted", "approved", "rejected"] },
+        "reviewedBy": { "type": "string" },
+        "reviewedAt": { "type": "string", "format": "date-time" },
+        "comment": { "type": "string" }
+      },
+      "required": ["staffId", "branchId", "kpiId", "period", "status"]
+    },
+    "Achievement": {
+      "title": "Achievement",
+      "description": "Validated achievement recorded by functions",
+      "type": "object",
+      "properties": {
+        "staffId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "districtId": { "type": "string" },
+        "kpiId": { "type": "string" },
+        "period": { "type": "string" },
+        "value": { "type": "number" },
+        "reportId": { "type": "string" }
+      },
+      "required": ["staffId", "kpiId", "period", "value", "reportId"]
+    },
+    "ProgressSummary": {
+      "title": "Progress Summary",
+      "description": "Rollup progress data",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "scope": { "type": "string", "enum": ["staff", "branch", "district"] },
+        "kpiId": { "type": "string" },
+        "period": { "type": "string" },
+        "targetValue": { "type": "number" },
+        "actualValue": { "type": "number" },
+        "percentage": { "type": "number" }
+      },
+      "required": ["ownerId", "scope", "period"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System notification",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "audience": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "body", "createdAt"]
+    },
+    "NotificationReceipt": {
+      "title": "Notification Receipt",
+      "description": "User read status for notification",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "notificationId": { "type": "string" },
+        "readAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "notificationId"]
+    },
+    "AuditLog": {
+      "title": "Audit Log",
+      "description": "System audit trail",
+      "type": "object",
+      "properties": {
+        "actorId": { "type": "string" },
+        "action": { "type": "string" },
+        "targetId": { "type": "string" },
+        "before": { "type": "object" },
+        "after": { "type": "object" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["actorId", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "users": { "schema": "User", "description": "User profiles" },
+    "districts": { "schema": "District", "description": "Bank districts" },
+    "branches": { "schema": "Branch", "description": "Bank branches" },
+    "positions": { "schema": "Position", "description": "Job positions" },
+    "kpis": { "schema": "KPI", "description": "KPI definitions" },
+    "targets": { "schema": "Target", "description": "Performance targets" },
+    "mappedCustomers": { "schema": "MappedCustomer", "description": "Customers mapped by staff" },
+    "plans": { "schema": "Plan", "description": "Activity plans" },
+    "reports": { "schema": "Report", "description": "Performance reports" },
+    "achievements": { "schema": "Achievement", "description": "Validated achievements" },
+    "progressSummaries": { "schema": "ProgressSummary", "description": "Progress rollups" },
+    "notifications": { "schema": "Notification", "description": "System notifications" },
+    "notificationReceipts": { "schema": "NotificationReceipt", "description": "Read status for notifications" },
+    "auditLogs": { "schema": "AuditLog", "description": "Audit trails" }
+  }
+}
